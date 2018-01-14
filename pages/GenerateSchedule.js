@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
 import DatePicker from "react-native-datepicker";
 import {Button, List, ListItem} from "react-native-elements";
+import {Actions} from "react-native-router-flux";
 
 
 export default class GenerateSchedule extends React.Component {
@@ -63,8 +64,7 @@ export default class GenerateSchedule extends React.Component {
             <Button style={{marginTop: 10}} title="+" onPress={this._addSubject}/>
 
             <View style={styles.bottomContainer}>
-                <Button onPress={() => {
-                }} title="Generate Schedule"/>
+                <Button onPress={Actions.pop} title="Generate Schedule"/>
             </View>
         </View>;
 

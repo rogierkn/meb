@@ -1,15 +1,14 @@
 import * as React from "react";
 import {TouchableOpacity, View} from 'react-native';
-import {Actions} from "react-native-router-flux";
-import {Button, List, ListItem, Text} from "react-native-elements";
+import {List, ListItem, Text} from "react-native-elements";
 
 
 export default class Session extends React.Component {
 
 
-    subjects = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 5 & 6"];
+    subjects = ["January 10th: 1 chapter", "January 12th: 2 chapters", "January 15th: 1 chapter", "January 20th: 1 chapter"];
     state = {
-        finished: []
+        finished: ["January 10th: 1 chapter"]
     };
 
     _markClick = (subject) => {
@@ -23,11 +22,9 @@ export default class Session extends React.Component {
     };
 
     render = () =>
-        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', marginTop: 20}}>
-            <Text h4>Session Info</Text>
-
+        <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
             <View style={{marginTop: 50, alignSelf: 'flex-start', width: '100%'}}>
-                <Text style={{marginLeft: 10}}>Subjects to study</Text>
+                <Text style={{marginLeft: 10}}>Study Sessions</Text>
                 <List>
                     {
                         this.subjects.map((subject, index) =>
@@ -41,28 +38,17 @@ export default class Session extends React.Component {
                                       rightIcon={
                                           <TouchableOpacity
                                               onPress={() => this._markClick(subject)}>
-                                              <Text style={{color: this.checkMarkColor(subject), fontSize: 20}}>&#x2713;</Text>
+                                              {this.state.finished.indexOf(subject) >= 0 &&
+                                              <Text style={{color: '#37ff00', fontSize: 20}}>
+                                                  &#x2713;
+                                              </Text>
+                                              }
                                           </TouchableOpacity>
                                       }/>
                         )
                     }
                 </List>
             </View>
-
-            <Text style={{marginTop: 50}} h4>Next break in <Text style={{fontWeight: 'bold'}}>12</Text> minutes</Text>
-
-            <Text style={{marginTop: 50, fontSize: 20}}>Session started at 10:34</Text>
-
-            <View style={{marginTop: 200}}>
-                <Button title="End session" onPress={Actions.pop}/>
-            </View>
-
         </View>;
 
-    checkMarkColor(subject) {
-        if (this.state.finished.indexOf(subject) >= 0) {
-            return '#37ff00';
-        }
-        return '#57c5ff';
-    }
 }
