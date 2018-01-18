@@ -1,51 +1,56 @@
 import React from 'react';
 import Home from "./pages/Home";
-import Session from "./pages/Session";
-import {Router, Scene, Stack} from "react-native-router-flux";
-import GenerateSchedule from "./pages/GenerateSchedule";
-import Schedule from "./pages/Schedule";
+import NewSchedule from "./pages/NewSchedule";
+import {colors} from "./styles";
+import {Ionicons} from "@expo/vector-icons";
+import {TabNavigator} from "react-navigation";
+import SubjectRepository, {getSubjectsForSession} from "./Entities/SubjectRepository";
+import {getSessions} from "./Entities/SessionRepository";
+
+
+const Navigator = TabNavigator({
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            tabBarLabel: 'Home',
+            tabBarIcon: ({tintColor, focused}) => <Ionicons name={focused ? "ios-home" : "ios-home-outline"} size={24}
+                                                            color={colors.accent}/>
+        }
+    },
+
+    NewSchedule: {
+        screen: NewSchedule,
+        navigationOptions: {
+            tabBarLabel: 'New exam',
+            tabBarIcon: ({tintColor, focused}) => <Ionicons name={focused ? "ios-add-circle" : "ios-add-circle-outline"}
+                                                            size={24} color={colors.accent}/>
+        }
+    }
+}, {
+    swipeEnabled: true,
+    tabBarOptions: {
+        activeTintColor: colors.accent,
+        inactiveTintColor: colors.accentLight,
+        style: {
+            backgroundColor: colors.lightBackground,
+        },
+    },
+    initialRouteName: 'NewSchedule'
+});
 
 
 export default class App extends React.Component {
 
-    state = {
-        pages: [
-            {
-                component: Home,
-                key: 'home',
-                name: 'Home',
-                title: 'My Exam Buddy'
-            },
-            {
-                component: Session,
-                key: 'session',
-                name: 'Session',
-                title: 'Study session'
-            },
-            {
-                component: GenerateSchedule,
-                key: 'generateSchedule',
-                name: 'Generate Schedule',
-                title: 'Generate new schedule'
-            },
-            {
-                component: Schedule,
-                key: 'schedule',
-                name: 'Schedule',
-                title: 'Schedule',
-            }
-        ],
-        selectedPage: 0,
-    };
 
-    render = () =>
-        <Router>
-            <Stack key="root">
-                {
-                    this.state.pages.map(page => {
-                        return <Scene key={page.key} component={page.component} title={page.title}/>;
-                    })
-                }
-            </Stack>
-        </Router>
+    constructor(props) {
+        super(props);
+    }
+
+
+    componentDidMount() {
+
+    }
+
+    render = () => <Navigator/>
+
 }

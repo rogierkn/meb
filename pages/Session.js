@@ -2,6 +2,7 @@ import * as React from "react";
 import {TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import {Button, List, ListItem, Text} from "react-native-elements";
+import {defaultContainer} from "../styles";
 
 
 export default class Session extends React.Component {
@@ -23,7 +24,7 @@ export default class Session extends React.Component {
     };
 
     render = () =>
-        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', marginTop: 20}}>
+        <View style={{...defaultContainer, justifyContent: 'flex-start', alignItems: 'center'}}>
             <Text h4>Session Info</Text>
 
             <View style={{marginTop: 50, alignSelf: 'flex-start', width: '100%'}}>
