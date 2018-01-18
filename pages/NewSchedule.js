@@ -7,6 +7,7 @@ import {Button} from "../components/Button";
 import {Ionicons} from "@expo/vector-icons";
 import Prompt from "rn-prompt";
 import {ColorContainer} from "../components/ColorContainer";
+import {FAB} from "../components/FAB";
 
 
 export default class NewSchedule extends React.Component {
@@ -90,8 +91,9 @@ export default class NewSchedule extends React.Component {
                             this.state.subjects.map(this._renderListcard)
                         }
                         </ScrollView>
-                        <Button size="small" style={{button: {marginTop: 10}}} title="Add subject"
-                                onPress={this._addSubject}/>
+                        <FAB size="small" style={{button: {marginTop: 30, marginRight: -30, alignSelf: 'flex-end'}}}
+
+                             onPress={this._addSubject}/>
                     </Card>
 
                     <Prompt
