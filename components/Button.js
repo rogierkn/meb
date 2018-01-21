@@ -21,13 +21,13 @@ const defaultButtonTextStyle = {
 };
 
 
-const Button = ({onPress, title, style = {button:{}, text:{}}, size = 'medium'}) => {
+const Button = ({onPress, title, style = {button:{}, text:{}}, size = 'medium', disabled = false}) => {
 
     const buttonStyle = {...defaultButtonStyle, ...style.button};
     const textStyle = {...defaultButtonTextStyle, ...style.text, fontSize: fonts.sizes.button[size]};
 
 
-    return <TouchableOpacity style={buttonStyle} onPress={onPress}>
+    return <TouchableOpacity style={buttonStyle} disabled={disabled} onPress={onPress}>
         <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
 };

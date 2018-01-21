@@ -12,10 +12,10 @@ const getSessionsWithRelations = callback => getSessions(sessions => sessions.fo
     if (exams.length > 0) {
         session.exam = exams[0];
     }
-    getSubjectsForSession(session, subjects => {
-        session.subjects = subjects;
-        callback(session);
-    });
+    // getSubjectsForSession(session, subjects => {
+    //     session.subjects = subjects;
+    //     callback(session);
+    // });
 })));
 
 

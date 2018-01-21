@@ -3,9 +3,9 @@ import {View} from 'react-native';
 import {Text} from "react-native-elements";
 import {Button} from "../components/Button";
 import {colors, defaultContainer} from "../styles";
-import {getSubjectsForSession} from "../Entities/SubjectRepository";
-import {getSessions, getSessionsWithRelations} from "../Entities/SessionRepository";
+import {getSubjectsByTimestamp} from "../Entities/SubjectRepository";
 import moment from "moment";
+import {ColorContainer} from "../components/ColorContainer";
 
 
 class Home extends React.Component {
@@ -14,56 +14,92 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sessions: []
+            subjects: []
         };
 
-        this.loadSessions();
+    }
+
+    componentDidMount() {
+        this._loadSessions();
+    }
+
+    componentWillReceiveProps(props) {
+        this._loadSessions();
     }
 
     /**
      * Load the study sessions from local db
      */
-    loadSessions = () => getSessionsWithRelations(session => this.setState({sessions: [...this.state.sessions, session]}));
+    _loadSessions = () => getSubjectsByTimestamp(subjects => this.setState({subjects: subjects}));
 
     get upcomingSession() {
-        if (this.state.sessions.length === 0) {
-            return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text h2 style={{color: colors.textDark}}>Stop stressing</Text>
-                    <Text h3 style={{color: colors.textDark}}>&</Text>
-                    <Text h2 style={{color: colors.textDark}}>get planning!</Text>
-
-                    <Text h4 style={{textAlign: 'center', marginTop: 30, color: colors.textDark}}>An exam coming up? Create your personal
-                        schedule and tackle the exam without stress!</Text>
-
-                    <Button style={{button: {marginTop: 20}}} title="Get started"
-                            onPress={() => console.error("Get started button not impl")}/>
+        if (this.state.subjects.length === 0) {
+            return <View style={{flex: 1, justifyContent: 'space-around', alignItems: 'center'}}>
+                <View style={{flex: 0, alignItems: 'center'}}>
+                    <Text h2 style={{color: colors.textLight, backgroundColor: 'transparent'}}>Stop stressing</Text>
+                    <Text h3 style={{color: colors.textLight, backgroundColor: 'transparent'}}>&</Text>
+                    <Text h2 style={{color: colors.textLight, backgroundColor: 'transparent'}}>get planning!</Text>
                 </View>
+
+                <Text h4 style={{
+                    textAlign: 'center',
+                    marginTop: 30,
+                    color: colors.textDark
+                }}>{`Have an exam coming up?\n\nCreate your personal schedule and tackle the exam without stress!`}</Text>
+
+                <Button style={{
+                    button: {marginTop: 20, borderColor: colors.home.accent},
+                    text: {color: colors.home.accent}
+                }} title="Get started"
+                        onPress={() => this.props.navigation.navigate('NewSchedule')}/>
             </View>
         }
 
-        const session = this.state.sessions[0];
-        const startofSession = moment(session.studytimestamp);
-        return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text h4 style={{color: colors.textDark}}>Next session</Text>
-            <Text style={{fontSize: 20, fontWeight: 'bold', color: colors.textDark, marginTop: 20}}>{startofSession.fromNow()}</Text>
-            <Text style={{fontSize: 20, fontWeight: 'bold', color: colors.textDark, marginTop: 20}}>{session.exam.name} - {moment(session.exam.examtimestamp).fromNow()}</Text>
+        const subject = this.state.subjects[0];
+        const startofSession = moment(subject.studytimestamp);
+        return <View style={{flex: 1, justifyContent: 'space-around', alignItems: 'center'}}>
+
+            <Text h2 style={{color: colors.textLight, backgroundColor: 'transparent'}}>
+                Exam Stress Buddy
+            </Text>
+
+            <View style={{flex: 0, alignItems: 'center'}}>
+
+                <Text h4 style={{color: colors.textDark, backgroundColor: 'transparent'}}>Next session</Text>
+                <Text style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: colors.textDark,
+                    marginTop: 20
+                }}>{subject.name}</Text>
+                <Text style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: colors.textDark,
+                    marginTop: 20
+                }}>{startofSession.fromNow()}</Text>
+                {/*<Text style={{fontSize: 20, fontWeight: 'bold', color: colors.textDark, marginTop: 20}}>{subject.exam.name} - {moment(subject.exam.examtimestamp).fromNow()}</Text>*/}
             {
                 startofSession.isBefore(moment()) &&
                 <Text style={{fontSize: 20, color: colors.textDark}}>You are late, start studying quickly!</Text>
             }
-            <Button style={{button: {marginTop: 10}}} title="Start Session" onPress={() => {
-            }}/>
+                <Button
+                    style={{
+                        button: {borderColor: colors.home.accent, marginTop: 10},
+                        text: {color: colors.home.accent}
+                    }}
+                    title="Start Session" onPress={() => this.props.navigation.navigate('StudySession')}/>
+            </View>
 
 
         </View>
     }
 
-    render = () => <View style={{...defaultContainer, justifyContent: 'space-around'}}>
-
-
-        {this.upcomingSession}
-    </View>;
+    render = () => <ColorContainer color={colors.home.colorContainer}>
+        <View style={{...defaultContainer, justifyContent: 'space-around'}}>
+            {this.upcomingSession}
+        </View>
+    </ColorContainer>;
 }
 
 
